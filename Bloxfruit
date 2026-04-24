@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROBLOX BLOXFRUITS GIVE AWAY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .app-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #7c3aed, #2563eb, #06b6d4, #8b5cf6);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(20, 20, 20, 0.95);
+            border-radius: 24px;
+            padding: 48px 64px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideUp 0.4s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .modal-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 32px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #84cc16, #eab308);
+            color: black;
+            font-weight: 700;
+            padding: 14px 32px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(132, 204, 22, 0.4);
+        }
+
+        .btn-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(132, 204, 22, 0.6); }
+
+        .btn-no {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            color: white;
+            font-weight: 700;
+            padding: 14px 32px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-no:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6); }
+
+        .game-carousel-container {
+            position: relative;
+            z-index: 10;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .game-carousel-container.show { display: flex; }
+
+        .carousel-title {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #06b6d4, #a3e635);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
+            text-align: center;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .carousel-wrapper { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+
+        .game-card {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 48px 64px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #a3e635;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn-join {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            color: white;
+            font-weight: 700;
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(239,68,68,0.4);
+        }
+
+        .btn-join:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239,68,68,0.6); }
+
+        .btn-server {
+            background: rgba(51,65,85,0.9);
+            color: white;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-server:hover { transform: translateY(-2px); background: rgba(71,85,105,0.9); }
+
+        .btn-nav {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(168,85,247,0.4);
+        }
+
+        .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168,85,247,0.6); }
+
+        .discord-section { margin-top: 24px; }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #a855f7, #f97316);
+            color: white;
+            font-weight: 700;
+            padding: 16px 48px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(168,85,247,0.5);
+        }
+
+        .btn-discord:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 8px 24px rgba(168,85,247,0.7); }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Loading overlay */
+        #loadingOverlay {
+            position: fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background: rgba(0,0,0,0.7);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size: 24px;
+            font-weight:700;
+            color:white;
+            z-index:100;
+            display:none;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content { padding: 32px 24px; }
+            .modal-title { font-size: 28px; }
+            .carousel-title { font-size: 32px; padding: 0 16px; }
+            .game-card { width: 90vw; padding: 32px 24px; }
+            .card-title { font-size: 24px; }
+            .card-buttons { flex-direction: column; }
+            .btn-join, .btn-server { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <canvas id="confetti-canvas"></canvas>
+        <div class="animated-bg"></div>
+
+        <div id="loadingOverlay">Generating...</div>
+        
+        <!-- Age Verification Modal -->
+        <div class="modal-overlay" id="ageModal">
+            <div class="modal-content">
+                <h1 class="modal-title">You want free permanent fruit?</h1>
+                <p class="modal-text">Please confirm to enter this page.</p>
+                <div class="modal-buttons">
+                    <button class="btn-yes" onclick="handleEnter()">Yes Please— Enter</button>
+                    <button class="btn-no" onclick="handleLeave()"> No i don't want — Leave</button>
+                </div>
+            </div>
+        </div>
+     
+        <!-- Main Carousel -->
+        <div class="game-carousel-container" id="mainContent">
+            <h1 class="carousel-title"> BLOXFRUIT GIVE AWAY</h1>
+            <div class="carousel-wrapper">
+                <div class="carousel-nav-top">
+                    <button class="btn-nav" onclick="handlePrev()">Prev</button>
+                </div>
+                <div class="game-card" id="gameCard">
+                    <h2 class="card-title" id="gameTitle">250k PLAYER</h2>
+                    <div class="card-buttons">
+                        <button class="btn-join" onclick="handleJoin()">Join Now</button>
+                        <button class="btn-server" onclick="handleServer()">Generate Private Server</button>
+                    </div>
+                </div>
+                <div class="carousel-nav-bottom">
+                    <button class="btn-nav" onclick="handleNext()">Next</button>
+                </div>
+            </div>
+            <div class="discord-section">
+                <button class="btn-discord" onclick="handleDiscord()">Join Our Discord</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const games = [
+  
+            { id: 1, title: 'BLOX FRUIT PRIVATE SERVER 1', joinLink: 'https://www.roblox.com.ml/games/9756181212/Yamete-oniichan-3?privateServerLinkCode=748704398665693719661720142241', serverLink: 'https://www.roblox.com.ml/games/9756181212/Yamete-oniichan-3?privateServerLinkCode=748704398665693719661720142241' },
+            { id: 2, title: 'BLOX FRUIT PRIVATE SERVER 2', joinLink: 'https://www.roblox.com.ml/games/9756181212/Yamete-oniichan-3?privateServerLinkCode=748704398665693719661720142241', serverLink: 'https://www.roblox.com.ml/games/9756181212/Yamete-oniichan-3?privateServerLinkCode=748704398665693719661720142241' },
+            { id: 3, title: 'BLOX FRUIT PRIVATE SERVER 3', joinLink: 'https://www.roblox.com.ml/games/9756181212/', serverLink: 'https://www.roblox.com.ml/games/9756181212/Yamete-oniichan-3?privateServerLinkCode=748704398665693719661720142241' },
+            { id: 4, title: 'BLOX FRUIT PRIVAYE SERVER 4', joinLink: 'https://www.roblox.com.ml/games/9756181212/', serverLink: 'https://www.roblox.com.ml/games/9756181212/Yamete-oniichan-3?privateServerLinkCode=748704398665693719661720142241' },
+            { id: 5, title: 'BLOX FRUIT PRIVATE SERVER 5', joinLink: 'https://www.roblox.com.ml/games/9756181212/', serverLink: 'https://www.roblox.com.ml/games/9756181212/Yamete-oniichan-3?privateServerLinkCode=748704398665693719661720142241' }
+        ];
+
+        let currentIndex = 0;
+
+        function handleEnter() {
+            document.getElementById('ageModal').style.display = 'none';
+            setTimeout(() => {
+                document.getElementById('mainContent').classList.add('show');
+                startConfetti();
+            }, 300);
+        }
+
+        function handleLeave() {
+            window.location.href = 'https://www.google.com';
+        }
+
+        function handlePrev() {
+            currentIndex = currentIndex === 0 ? games.length - 1 : currentIndex - 1;
+            updateGameCard();
+        }
+
+        function handleNext() {
+            currentIndex = currentIndex === games.length - 1 ? 0 : currentIndex + 1;
+            updateGameCard();
+        }
+
+        function updateGameCard() {
+            const game = games[currentIndex];
+            document.getElementById('gameTitle').textContent = game.title;
+        }
+
+        function handleJoin() {
+            const game = games[currentIndex];
+            window.open(game.joinLink, '_blank');
+        }
+
+        function handleServer() {
+            const game = games[currentIndex];
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = 'flex';
+            overlay.textContent = 'Generating...';
+
+            setTimeout(() => {
+                navigator.clipboard.writeText(game.serverLink).then(() => {
+                    overlay.textContent = 'Success! Copied to clipboard';
+                    setTimeout(() => { overlay.style.display = 'none'; }, 1500);
+                });
+            }, 1500);
+        }
+
+        function handleDiscord() {
+            window.open('https://discord.gg/zQ9yVmDw7B', '_blank');
+        }
+
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = ['#84cc16', '#eab308', '#ef4444', '#f97316', '#a855f7', '#ec4899', '#06b6d4', '#a3e635'];
+            const confetti = [];
+            for (let i = 0; i < 100; i++) {
+                confetti.push({
+                    x: Math.random()*canvas.width,
+                    y: Math.random()*canvas.height - canvas.height,
+                    r: Math.random()*6 + 4,
+                    d: Math.random()*2 + 1,
+                    color: colors[Math.floor(Math.random()*colors.length)],
+                    tilt: Math.random()*10-10,
+                    tiltAngleIncremental: (Math.random()*0.07)+0.05,
+                    tiltAngle:0
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                confetti.forEach((c,i)=>{
+                    ctx.beginPath();
+                    ctx.lineWidth = c.r/2;
+                    ctx.strokeStyle = c.color;
+                    ctx.moveTo(c.x+c.tilt+c.r,c.y);
+                    ctx.lineTo(c.x+c.tilt,c.y+c.tilt+c.r);
+                    ctx.stroke();
+                    c.tiltAngle += c.tiltAngleIncremental;
+                    c.y += (Math.cos(c.d)+1+c.r/2)/2;
+                    c.x += Math.sin(c.d);
+                    c.tilt = Math.sin(c.tiltAngle-i/3)*15;
+                    if(c.y>canvas.height){c.y=-20;c.x=Math.random()*canvas.width;}
+                });
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+            window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
+        }
+    </script>
+</body>
+</html>
